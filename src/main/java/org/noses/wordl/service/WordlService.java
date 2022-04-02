@@ -51,11 +51,40 @@ public class WordlService {
         return true;
     }
 
+    boolean doesntContainLettersAt(String word, List<List<Character>> letters) {
+        char[] wordAsArray = word.toCharArray();
+        for (int i = 0; i < 5; i++) { // unhardcode 5
+            if (word.length()<=i) {
+                return false;
+            }
+
+            if (letters.get(i) == null) {
+                continue;
+            }
+
+            if (letters.get(i).contains(wordAsArray[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    boolean doesntHaveBadLetters(String word, List<Character> letters) {
+        for (Character letter: letters) {
+            if (word.contains(letter+"")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public List<String> getAllPossibleWords(KnownStatus knownStatus) {
         List<Character> allLetters = knownStatus.getAllLettersExists();
         List<String> words = dictionary.getWords(5).stream()
+                .filter(w->doesntHaveBadLetters(w, knownStatus.getNotExists()))
                 .filter(w->containsAllLetters(w, allLetters))
                 .filter(w->containsLettersAt(w, knownStatus.getCorrect()))
+                .filter(w->doesntContainLettersAt(w, knownStatus.getWrongPlace()))
                 .collect(Collectors.toList());
 
         return words;
