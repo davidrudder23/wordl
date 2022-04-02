@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class GuessResults {
+    String solver;
+
     LetterResult[] letterResults;
 
 }
