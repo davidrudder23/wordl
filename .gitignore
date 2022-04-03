@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -10,10 +9,9 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
-=======
+log
+
 HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -44,4 +42,3 @@ build/
 
 ### VS Code ###
 .vscode/
->>>>>>> First push
