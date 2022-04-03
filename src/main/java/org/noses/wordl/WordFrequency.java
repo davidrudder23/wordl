@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -49,9 +52,24 @@ public class WordFrequency {
         }
         Long amt = table.get(word);
         if (amt == null) {
-            log.warn("Didn't find {} in dictionary", word);
+            //log.warn("Didn't find {} in dictionary", word);
             return 0;
         }
         return amt;
+    }
+
+    public List<String> getMostFrequent(Dictionary dictionary, int wordSize, int listSize) {
+        if (table == null) loadWords();
+
+        List<String> results = table.keySet()
+                .stream()
+                .filter(w->w.length()==wordSize)
+                .filter(w->dictionary.getWords(wordSize).contains(w))
+                .sorted((a,b)->table.get(b).compareTo(table.get(a)))
+                .limit(listSize)
+                .collect(Collectors.toList());
+
+        log.info("{} most frequent words={}", listSize, results);
+        return results;
     }
 }

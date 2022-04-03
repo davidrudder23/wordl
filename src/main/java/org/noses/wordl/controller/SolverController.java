@@ -4,11 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.noses.wordl.Dictionary;
 import org.noses.wordl.model.GuessResults;
 import org.noses.wordl.model.KnownStatus;
-import org.noses.wordl.service.WordlService;
-import org.noses.wordl.solvers.DaveSolver;
+import org.noses.wordl.service.SolverService;
 import org.noses.wordl.solvers.Solver;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -16,21 +13,19 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-public class WordlController {
+public class SolverController {
 
     Dictionary dictionary;
-    WordlService service;
+    SolverService service;
 
-    public WordlController(@Autowired Dictionary dictionary, @Autowired WordlService wordlService) {
+    public SolverController(@Autowired Dictionary dictionary, @Autowired SolverService solverService) {
         this.dictionary = dictionary;
-        this.service = wordlService;
+        this.service = solverService;
     }
 
     @GetMapping("/")

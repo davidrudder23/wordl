@@ -36,6 +36,7 @@ public class DaveSolverTest {
         words.add("antic");
         words.add("pants");
         words.add("altar");
+        words.add("antsy");
         when(dictionary.getWords(anyInt())).thenReturn(words);
 
         KnownStatus knownStatus = new KnownStatus();

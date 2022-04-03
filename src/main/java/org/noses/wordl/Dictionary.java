@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class Dictionary {
         return random;
     }
 
-    public ArrayList<String> getWords(int wordLength) {
+    public List<String> getWords(int wordLength) {
         if (words == null) {
             loadWords();
         }
@@ -81,11 +82,12 @@ public class Dictionary {
     }
 
     public String getRandomWord(int wordLength) {
-        ArrayList<String> words = getWords(wordLength);
+        List<String> words = getWords(wordLength);
         if (words == null) {
             return null;
         }
         log.info("We have {} words", words.size());
         return words.get(Math.abs(getRandom().nextInt()%words.size()));
     }
+
 }

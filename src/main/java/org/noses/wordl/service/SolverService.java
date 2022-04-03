@@ -13,7 +13,6 @@ import org.reflections.scanners.SubTypesScanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -21,20 +20,19 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class WordlService {
+public class SolverService {
 
     Dictionary dictionary;
     WordFrequency wordFrequency;
 
     HashMap<String, Solver> solvers;
 
-    public WordlService(@Autowired Dictionary dictionary, @Autowired WordFrequency wordFrequency) {
+    public SolverService(@Autowired Dictionary dictionary, @Autowired WordFrequency wordFrequency) {
         this.dictionary = dictionary;
         this.wordFrequency = wordFrequency;
     }
 
     public void populateKnownStatus(KnownStatus knownStatus, GuessResults guessResults) {
-        log.info("Guess Results={}", guessResults);
         for (int i = 0; i < guessResults.getLetterResults().length; i++) {
             LetterResult letterResult = guessResults.getLetterResults()[i];
 
