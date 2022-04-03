@@ -95,12 +95,12 @@ public class CheckerService {
         return true;
     }
 
-    public String checkAll() {
+    public String checkAll(int listSize) {
 
         // Okay, we can't actually check _all_ words.  It would output a CSV of 230GB big and I don't have the space
         // Besides, how would you understand the output?
         Collection<Solver> solvers = getSolvers().values();
-        List<String> words = wordFrequency.getMostFrequent(dictionary, 5, 300);
+        List<String> words = wordFrequency.getMostFrequent(dictionary, 5, listSize);
         log.info("Starting with {} words", words.size());
         // filter out words that aren't in the word frequency table, they're probably bullshit
         words = words.stream()
@@ -118,6 +118,7 @@ public class CheckerService {
 
 
         for (Solver solver: solvers) {
+            String solverName = solver.getClass().getSimpleName();
             for (String firstWord: words) {
                 int numWords = 0;
                 long totalValue = 0;
@@ -128,7 +129,8 @@ public class CheckerService {
                     numWords++;
                 }
                 log.info("Done Flipping through {} words for firstWord {}", words.size(), firstWord);
-                String thisResult = solver.getClass().getSimpleName()+","+firstWord+","+(totalValue/numWords);
+                float avg = (float)((float)totalValue/(float) numWords);
+                String thisResult = solverName+","+firstWord+","+avg;
                 log.info("CSV: {}", thisResult);
                 result.append(thisResult+"\n");
             }
