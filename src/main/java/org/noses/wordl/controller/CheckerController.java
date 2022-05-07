@@ -31,8 +31,9 @@ public class CheckerController {
     }
 
     @GetMapping("/check/all")
-    public String checkAll(@RequestParam(required = false, name="listsize") int listSize) {
-        return checkerService.checkAll(listSize);
+    public String checkAll(@RequestParam(required = false, name="listsize") int listSize,
+                           @RequestParam(required = false, name="solver") String solverName) {
+        return checkerService.checkAll(listSize, solverName);
     }
 
 }

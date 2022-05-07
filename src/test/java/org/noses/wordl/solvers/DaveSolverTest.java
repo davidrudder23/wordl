@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DaveSolverTest {
+public class DaveSolverTest extends BaseSolverTest {
     @Test
     public void testAllLettersExist() {
         DaveSolver daveSolver = new DaveSolver(null, null);
@@ -30,14 +30,7 @@ public class DaveSolverTest {
 
     @Test
     public void testGetAllPossibleWords() {
-        Dictionary dictionary = mock(Dictionary.class);
-        ArrayList<String> words = new ArrayList<>();
-        words.add("aunts");
-        words.add("antic");
-        words.add("pants");
-        words.add("altar");
-        words.add("antsy");
-        when(dictionary.getWords(anyInt())).thenReturn(words);
+        Dictionary dictionary = getDictionary();
 
         KnownStatus knownStatus = new KnownStatus();
         knownStatus.addCorrect(0, 'a');
@@ -58,10 +51,7 @@ public class DaveSolverTest {
         words.add("aunts");
         words.add("pants");
 
-        WordFrequency wordFrequency = mock(WordFrequency.class);
-        when (wordFrequency.getWordFrequency("aunts")).thenReturn(100l);
-        when (wordFrequency.getWordFrequency("pants")).thenReturn(1000l);
-
+        WordFrequency wordFrequency = getWordFrequency();
         DaveSolver daveSolver = new DaveSolver(null, wordFrequency);
 
         Assert.isTrue(daveSolver.getSortedByMostFrequent(words).get(0).equals ("pants"), "Pants should be most frequent");

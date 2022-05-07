@@ -9,6 +9,7 @@ import org.noses.wordl.model.LetterResult;
 import org.noses.wordl.solvers.Solver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,11 +96,19 @@ public class CheckerService {
         return true;
     }
 
-    public String checkAll(int listSize) {
+    public String checkAll(int listSize, String solverName) {
 
         // Okay, we can't actually check _all_ words.  It would output a CSV of 230GB big and I don't have the space
         // Besides, how would you understand the output?
-        Collection<Solver> solvers = getSolvers().values();
+        Collection<Solver> solvers = null;
+
+        if ( StringUtils.hasLength(solverName)) {
+            solvers = new ArrayList<>();
+            solvers.add(getSolver(solverName));
+        } else {
+            getSolvers().values();
+        }
+
         List<String> words = wordFrequency.getMostFrequent(dictionary, 5, listSize);
         log.info("Starting with {} words", words.size());
         // filter out words that aren't in the word frequency table, they're probably bullshit
@@ -118,19 +127,14 @@ public class CheckerService {
 
 
         for (Solver solver: solvers) {
-            String solverName = solver.getClass().getSimpleName();
+            String solverSimpleName = solver.getClass().getSimpleName();
             for (String firstWord: words) {
-                int numWords = 0;
                 long totalValue = 0;
                 log.info("Flipping through {} words for firstWord {}", words.size(), firstWord);
-                for (String answer: words) {
-                    int numGuesses = numGuesses(solver, answer, firstWord);
-                    totalValue += numGuesses;
-                    numWords++;
-                }
-                log.info("Done Flipping through {} words for firstWord {}", words.size(), firstWord);
-                float avg = (float)((float)totalValue/(float) numWords);
-                String thisResult = solverName+","+firstWord+","+avg;
+                totalValue = words.parallelStream().map(answer->numGuesses(solver, answer, firstWord)).reduce(0, Integer::sum);
+
+                float avg = (float)((float)totalValue/(float)words.size());
+                String thisResult = solverSimpleName+","+firstWord+","+avg;
                 log.info("CSV: {}", thisResult);
                 result.append(thisResult+"\n");
             }

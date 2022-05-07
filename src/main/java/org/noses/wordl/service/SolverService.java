@@ -46,6 +46,8 @@ public class SolverService {
                 log.error("Unknown letter result {}", letterResult.getResult());
             }
         }
+
+        knownStatus.setNumGuesses(knownStatus.getNumGuesses()+1);
     }
 
     public HashMap<String, Solver> getSolvers() {

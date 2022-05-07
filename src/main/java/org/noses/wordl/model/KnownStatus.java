@@ -11,6 +11,7 @@ public class KnownStatus {
     List<List<Character>> wrongPlace;
     List<Character> notExists;
     Character[] correct;
+    int numGuesses;
 
     public KnownStatus() {
         wrongPlace = new ArrayList<>(5);
@@ -20,6 +21,8 @@ public class KnownStatus {
 
         notExists = new ArrayList<>();
         correct = new Character[5];
+
+        numGuesses = 0;
     }
 
     public void addCorrect(int place, Character letter) {
@@ -73,5 +76,13 @@ public class KnownStatus {
 
     public Character[] getCorrect() {
         return correct;
+    }
+
+    public int getNumGuesses() {
+        return numGuesses;
+    }
+
+    public void setNumGuesses(int numGuesses) {
+        this.numGuesses = numGuesses;
     }
 }
